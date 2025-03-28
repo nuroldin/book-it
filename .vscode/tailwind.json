@@ -2,6 +2,26 @@
 	"version": 1.1,
 	"atDirectives": [
 		{
+			"name": "@custom-variant",
+			"description": "The `@custom-variant` directive allows you to define your own custom variants for utilities. This can be useful for creating reusable patterns or extending Tailwind's default variants.",
+			"references": [
+				{
+					"name": "Tailwind Documentation",
+					"url": "https://tailwindcss.com/docs/adding-custom-variants"
+				}
+			]
+		},
+		{
+			"name": "@theme",
+			"description": "The `@theme` directive allows you to access your Tailwind theme values directly in your CSS. This is useful for dynamically referencing theme values in custom styles:\n```css\n.alert {\n  color: theme('colors.red.500');\n}\n```",
+			"references": [
+				{
+					"name": "Tailwind Documentation",
+					"url": "https://tailwindcss.com/docs/theme-function"
+				}
+			]
+		},
+		{
 			"name": "@tailwind",
 			"description": "Use the `@tailwind` directive to insert Tailwind's `base`, `components`, `utilities` and `screens` styles into your CSS.",
 			"references": [

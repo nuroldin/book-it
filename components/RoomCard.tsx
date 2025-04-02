@@ -41,7 +41,7 @@ const RoomCard = ({ room }: { room: Room }) => {
 					</p>
 					<p className="text-sm text-gray-600">
 						<span className="font-semibold text-gray-800"> Price:&nbsp;</span>
-						{room.price_per_hour.toLocaleString("en-PH", {
+						{Number(room.price_per_hour).toLocaleString("en-PH", {
 							style: "currency",
 							currency: "PHP",
 							minimumFractionDigits: 2,

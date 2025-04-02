@@ -2,17 +2,14 @@ import Heading from "@/components/Heading";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
-import rooms from "@/data/rooms.json";
 import BookingForm from "@/components/BookingForm";
+import { Models } from "node-appwrite";
+import { getSingleRoom } from "@/app/actions/getSingleRoom";
 
-interface Room {
-	$id: string;
+interface Room extends Models.Document {
 	name: string;
-	image: string;
 	address: string;
-	description: string;
 	availability: string;
-	sqft: number;
 	price_per_hour: number;
 }
 
@@ -20,9 +17,9 @@ interface RoomPageProps {
 	params: { id: string };
 }
 
-const RoomPage = ({ params }: RoomPageProps) => {
-	const { id } = params;
-	const room = rooms.find((room) => room.$id === id);
+const RoomPage = async ({ params }: RoomPageProps) => {
+	const { id } = await params;
+	const room = await getSingleRoom(id);
 
 	if (!room) {
 		return <Heading title="Room Not Found" />;

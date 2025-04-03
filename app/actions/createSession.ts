@@ -1,6 +1,6 @@
 "use server";
 
-async function createSession(formData: FormData) {
+async function createSession(state: void, formData: FormData) {
 	const email = formData.get("email") as string | null;
 	const password = formData.get("password") as string | null;
 

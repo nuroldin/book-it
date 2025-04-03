@@ -3,6 +3,9 @@ import { Lora } from "next/font/google";
 import "@/assets/styles/globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { Bounce, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const lora = Lora({
 	subsets: ["latin"],
@@ -60,13 +63,33 @@ export default function RootLayout({
 	children,
 }: Readonly<{ children: React.ReactNode }>) {
 	return (
-		<html lang="en" className={lora.variable}>
+		<html lang="en" className={lora.variable + `dark`}>
 			<body className="antialiased">
-				<Header />
-				<main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-					{children}
-				</main>
-				<Footer />
+				<ThemeProvider
+					attribute="class"
+					defaultTheme="system"
+					enableSystem
+					disableTransitionOnChange
+				>
+					<Header />
+					<main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+						{children}
+					</main>
+					<Footer />
+					<ToastContainer
+						position="top-right"
+						autoClose={5000}
+						hideProgressBar={false}
+						newestOnTop={false}
+						closeOnClick={false}
+						rtl={false}
+						pauseOnFocusLoss
+						draggable
+						pauseOnHover
+						theme="dark"
+						transition={Bounce}
+					/>
+				</ThemeProvider>
 			</body>
 		</html>
 	);

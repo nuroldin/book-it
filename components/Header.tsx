@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { LogIn, User, Building, LogOut } from "lucide-react";
 import logo from "@/assets/images/logo.svg";
+import { ToggleTheme } from "./ToggleButton";
 
 const Header = () => {
 	return (
@@ -61,6 +62,7 @@ const Header = () => {
 							>
 								<LogOut className="w-3 h-3 mr-1" /> Sign Out
 							</Link>
+							<ToggleTheme />
 						</div>
 					</div>
 				</div>

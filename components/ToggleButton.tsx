@@ -2,10 +2,10 @@
 
 import { Toggle } from "@/components/ui/toggle";
 import { Moon, Sun } from "lucide-react";
-import { useState } from "react";
+import { useTheme } from "next-themes";
 
 function ToggleTheme() {
-	const [theme, setTheme] = useState<string>("light");
+	const { theme, setTheme } = useTheme();
 
 	return (
 		<div>

@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { Bounce, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { cn } from "@/lib/utils";
 
 const lora = Lora({
 	subsets: ["latin"],
@@ -28,46 +29,40 @@ export const metadata: Metadata = {
 		"vacation rental",
 		"stay booking",
 	],
-	authors: [{ name: "Nuroldin U. Pimping", url: "https://nuroldin.com" }],
-	creator: "Nuroldin U. Pimping",
-	openGraph: {
-		title: "Bookit - Effortless Room Booking App",
-		description:
-			"Bookit lets you find and book rooms instantly. Experience hassle-free reservations with a modern, easy-to-use interface.",
-		url: "https://bookit-app.com",
-		siteName: "Bookit",
-		images: [
-			{
-				url: "https://bookit-app.com/og-image.jpg",
-				width: 1200,
-				height: 630,
-				alt: "Bookit - Room Booking App",
-			},
-		],
-		type: "website",
-	},
-	twitter: {
-		card: "summary_large_image",
-		title: "Bookit - Effortless Room Booking App",
-		description:
-			"Bookit is a seamless and intuitive app for booking rooms in seconds. Find, book, and manage reservations effortlessly.",
-		images: ["https://bookit-app.com/twitter-image.jpg"],
-	},
-	robots: {
-		index: true,
-		follow: true,
-	},
 };
 
-export default function RootLayout({
-	children,
-}: Readonly<{ children: React.ReactNode }>) {
+interface RootLayoutProps {
+	children: React.ReactNode;
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
 	return (
-		<html lang="en" className={lora.variable + `dark`}>
-			<body className="antialiased">
+		<html lang="en" suppressHydrationWarning className={lora.variable}>
+			<head>
+				{/* Apply the correct theme before hydration to prevent mismatches */}
+				<script
+					dangerouslySetInnerHTML={{
+						__html: `
+              (function() {
+                let theme = localStorage.getItem('theme') || 'system';
+                let systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                let isDark = theme === 'dark' || (theme === 'system' && systemDark);
+                if (isDark) {
+                  document.documentElement.classList.add('dark');
+                  document.documentElement.style.colorScheme = 'dark';
+                } else {
+                  document.documentElement.classList.remove('dark');
+                  document.documentElement.style.colorScheme = 'light';
+                }
+              })();
+            `,
+					}}
+				/>
+			</head>
+			<body className={cn("antialiased")}>
 				<ThemeProvider
 					attribute="class"
-					defaultTheme="system"
+					defaultTheme="light"
 					enableSystem
 					disableTransitionOnChange
 				>

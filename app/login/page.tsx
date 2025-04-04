@@ -6,58 +6,55 @@ import createSession from "../actions/createSession";
 import { useActionState } from "react";
 import { Input } from "@/components/ui/input";
 import { AtSign, ChevronDown } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { createAdminClient } from "@/config/appwrite";
 
 const LoginPage = () => {
 	const [state, formAction] = useActionState(createSession, undefined);
-	const [isPending, startTransition] = useTransition(); // Initialize transition
-	const [username, setUsername] = useState("");
+	const [isPending, startTransition] = useTransition();
+	const [username, setUsername] = useState("pimping.nu72");
 	const [domain, setDomain] = useState("s.msumain.edu.ph");
-	const [password, setPassword] = useState("");
+	const [password, setPassword] = useState("Kanashii@69");
 	const [errors, setErrors] = useState<{ email?: string; password?: string }>(
 		{}
 	);
+	const router = useRouter();
 
-	// Handle form submission
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault(); // Prevent default form submission
+		e.preventDefault();
 
-		// Reset previous errors
 		setErrors({});
 
-		// Combine email
 		const fullEmail = `${username}@${domain}`;
 		let validationErrors: { email?: string; password?: string } = {};
 
-		// Validate email
 		if (!username.trim()) {
 			validationErrors.email = "Email is required.";
 		}
 
-		// Validate password
 		if (!password.trim()) {
 			validationErrors.password = "Password is required.";
 		}
 
-		// If there are validation errors, show them and stop submission
 		if (Object.keys(validationErrors).length > 0) {
 			setErrors(validationErrors);
 			return;
 		}
 
-		// Create formData with the full email
 		const formData = new FormData(e.currentTarget);
-		formData.set("email", fullEmail); // Set combined email
+		formData.set("email", fullEmail);
 
-		// Submit using startTransition
 		startTransition(() => {
 			formAction(formData);
 		});
 	};
 
-	// Show success/error messages from server response
 	useEffect(() => {
 		if (state?.error) toast.error(state.error);
-		if (state?.success) toast.success("Logged in successfully!");
+		if (state?.success) {
+			toast.success("Login successful!");
+			router.push("/");
+		}
 	}, [state]);
 
 	return (

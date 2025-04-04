@@ -122,3 +122,9 @@ html {
 		@apply bg-background text-foreground;
 	}
 }
+
+.toastify-container,
+.Toastify__toast-body,
+.Toastify__toast {
+	font-family: var(--font-lora), serif !important;
+}

@@ -39,7 +39,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
 	return (
 		<html lang="en" suppressHydrationWarning className={lora.variable}>
 			<head>
-				{/* Apply the correct theme before hydration to prevent mismatches */}
 				<script
 					dangerouslySetInnerHTML={{
 						__html: `
@@ -73,7 +72,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
 					<Footer />
 					<ToastContainer
 						position="top-right"
-						autoClose={5000}
+						autoClose={700}
 						hideProgressBar={false}
 						newestOnTop={false}
 						closeOnClick={false}
@@ -81,7 +80,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
 						pauseOnFocusLoss
 						draggable
 						pauseOnHover
-						theme="dark"
+						theme="light"
 						transition={Bounce}
 					/>
 				</ThemeProvider>

@@ -7,26 +7,18 @@ import { ToggleTheme } from "./ToggleButton";
 import { useRouter } from "next/navigation";
 import destroySession from "@/app/actions/destroySession";
 import { toast } from "react-toastify";
-import { useEffect, useState } from "react";
-import checkAuth from "@/app/actions/checkAuth";
+import { useAuth } from "@/context/authContext";
 
 const Header = () => {
 	const router = useRouter();
-	const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-
-	useEffect(() => {
-		const fetchAuthStatus = async () => {
-			const result = await checkAuth();
-			setIsAuthenticated(result.isAuthenticated);
-		};
-
-		fetchAuthStatus();
-	}, []);
+	const { isAuthenticated, setIsAuthenticated } = useAuth();
 
 	const handleLogout = async () => {
 		const { success, error } = await destroySession();
 
 		if (success) {
+			setIsAuthenticated(false);
+			toast.success("Logout successful");
 			router.push("/login");
 		} else {
 			toast.error(error);

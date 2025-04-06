@@ -7,6 +7,7 @@ import { Bounce, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
+import AuthWrapper from "@/components/AuthWrapper";
 
 const lora = Lora({
 	subsets: ["latin"],
@@ -37,11 +38,12 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
 	return (
-		<html lang="en" suppressHydrationWarning className={lora.variable}>
-			<head>
-				<script
-					dangerouslySetInnerHTML={{
-						__html: `
+		<AuthWrapper>
+			<html lang="en" suppressHydrationWarning className={lora.variable}>
+				<head>
+					<script
+						dangerouslySetInnerHTML={{
+							__html: `
               (function() {
                 let theme = localStorage.getItem('theme') || 'system';
                 let systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -55,36 +57,37 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 }
               })();
             `,
-					}}
-				/>
-			</head>
-			<body className={cn("antialiased")}>
-				<ThemeProvider
-					attribute="class"
-					defaultTheme="light"
-					enableSystem
-					disableTransitionOnChange
-				>
-					<Header />
-					<main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-						{children}
-					</main>
-					<Footer />
-					<ToastContainer
-						position="top-right"
-						autoClose={700}
-						hideProgressBar={false}
-						newestOnTop={false}
-						closeOnClick={false}
-						rtl={false}
-						pauseOnFocusLoss
-						draggable
-						pauseOnHover
-						theme="light"
-						transition={Bounce}
+						}}
 					/>
-				</ThemeProvider>
-			</body>
-		</html>
+				</head>
+				<body className={cn("antialiased")}>
+					<ThemeProvider
+						attribute="class"
+						defaultTheme="light"
+						enableSystem
+						disableTransitionOnChange
+					>
+						<Header />
+						<main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+							{children}
+						</main>
+						<Footer />
+						<ToastContainer
+							position="top-right"
+							autoClose={700}
+							hideProgressBar={false}
+							newestOnTop={false}
+							closeOnClick={false}
+							rtl={false}
+							pauseOnFocusLoss
+							draggable
+							pauseOnHover
+							theme="light"
+							transition={Bounce}
+						/>
+					</ThemeProvider>
+				</body>
+			</html>
+		</AuthWrapper>
 	);
 }

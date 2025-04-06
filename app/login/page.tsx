@@ -7,10 +7,11 @@ import { useActionState } from "react";
 import { Input } from "@/components/ui/input";
 import { AtSign, ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { createAdminClient } from "@/config/appwrite";
+import { useAuth } from "@/context/authContext";
 
 const LoginPage = () => {
 	const [state, formAction] = useActionState(createSession, undefined);
+	const { isAuthenticated, setIsAuthenticated } = useAuth();
 	const [isPending, startTransition] = useTransition();
 	const [username, setUsername] = useState("pimping.nu72");
 	const [domain, setDomain] = useState("s.msumain.edu.ph");
@@ -53,6 +54,7 @@ const LoginPage = () => {
 		if (state?.error) toast.error(state.error);
 		if (state?.success) {
 			toast.success("Login successful!");
+			setIsAuthenticated(true);
 			router.push("/");
 		}
 	}, [state]);

@@ -1,11 +1,32 @@
+"use client";
+import { useActionState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 import Heading from "@/components/Heading";
+import createRoom from "@/app/actions/createRoom";
 
 const AddRoomPage = () => {
+	interface CreateRoomState {
+		error?: string;
+		// Add other properties of the state if needed
+		success?: boolean;
+	}
+
+	const [state, formAction] = useActionState<CreateRoomState>(createRoom, {});
+	const router = useRouter();
+
+	useEffect(() => {
+		if (state.error) toast.error(state.error);
+		if (state.success) {
+			toast.success("Room created successfully");
+			router.push("/");
+		}
+	}, [state]);
 	return (
 		<>
 			<Heading title="Add a Room" />
 			<div className="bg-white shadow-lg rounded-lg p-6 w-full">
-				<form>
+				<form action={formAction}>
 					<div className="mb-4">
 						<label
 							htmlFor="name"

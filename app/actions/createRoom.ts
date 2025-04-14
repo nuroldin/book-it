@@ -27,7 +27,7 @@ async function createRoom(
 	formData: FormData
 ): Promise<CreateRoomResponse | void> {
 	// Get databases instance
-	const { databases } = await createAdminClient();
+	const { databases, storage } = await createAdminClient();
 
 	try {
 		const { user } = await checkAuth();
@@ -38,6 +38,25 @@ async function createRoom(
 			};
 		}
 
+		// Uploading image
+		let imageID;
+
+		const image = formData.get("image") as File;
+
+		if (image && image.size > 0 && image.name !== "undefined") {
+			try {
+				// Upload
+				const response = await storage.createFile("rooms", ID.unique(), image);
+				imageID = response.$id;
+			} catch (error) {
+				console.log("Error uploading image:", error);
+				return {
+					error: "Error uploading image",
+				};
+			}
+		} else {
+			console.log("No image provided or invalid image");
+		}
 		// Create room
 		const newRoom = await databases.createDocument(
 			process.env.NEXT_PUBLIC_APPWRITE_DATABASE as string,
@@ -54,6 +73,7 @@ async function createRoom(
 				availability: formData.get("availability") as string,
 				price_per_hour: formData.get("price_per_hour") as string,
 				amenities: formData.get("amenities") as string,
+				image: imageID,
 			}
 		);
 		revalidatePath("/", "layout");
@@ -71,3 +91,5 @@ async function createRoom(
 		};
 	}
 }
+
+export default createRoom;

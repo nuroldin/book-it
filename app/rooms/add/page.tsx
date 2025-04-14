@@ -12,12 +12,15 @@ const AddRoomPage = () => {
 		success?: boolean;
 	}
 
-	const [state, formAction] = useActionState<CreateRoomState>(createRoom, {});
+	const [state, formAction] = useActionState<CreateRoomState>(createRoom, {
+		error: undefined,
+		success: undefined,
+	});
 	const router = useRouter();
 
 	useEffect(() => {
-		if (state.error) toast.error(state.error);
-		if (state.success) {
+		if (state?.error) toast.error(state.error);
+		if (state?.success) {
 			toast.success("Room created successfully");
 			router.push("/");
 		}

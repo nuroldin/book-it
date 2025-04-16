@@ -46,7 +46,11 @@ async function createRoom(
 		if (image && image.size > 0 && image.name !== "undefined") {
 			try {
 				// Upload
-				const response = await storage.createFile("rooms", ID.unique(), image);
+				const response = await storage.createFile(
+					process.env.NEXT_PUBLIC_APPWRITE_ROOMS_STORAGE_BUCKET || "",
+					ID.unique(),
+					image
+				);
 				imageID = response.$id;
 			} catch (error) {
 				console.log("Error uploading image:", error);

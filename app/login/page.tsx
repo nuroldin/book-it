@@ -55,9 +55,14 @@ const LoginPage = () => {
 		if (state?.success) {
 			toast.success("Login successful!");
 			setIsAuthenticated(true);
-			router.push("/");
 		}
 	}, [state]);
+
+	useEffect(() => {
+		if (isAuthenticated) {
+			router.push("/");
+		}
+	}, [isAuthenticated]);
 
 	return (
 		<div className="flex items-center justify-center">

@@ -25,6 +25,13 @@ const RoomPage = async ({ params }: RoomPageProps) => {
 		return <Heading title="Room Not Found" />;
 	}
 
+	const bucketId = process.env.NEXT_PUBLIC_APPWRITE_ROOMS_STORAGE_BUCKET;
+	const projectId = process.env.NEXT_PUBLIC_APPWRITE_PROJECT;
+	const endpoint = process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT;
+	const imageUrl = `${endpoint}/storage/buckets/${bucketId}/files/${room.image}/view?project=${projectId}`;
+
+	const imageSrc = room.image ? imageUrl : "/images/no-image.jpg";
+
 	const formattedPrice = new Intl.NumberFormat("en-PH", {
 		style: "currency",
 		currency: "PHP",
@@ -44,7 +51,7 @@ const RoomPage = async ({ params }: RoomPageProps) => {
 
 				<div className="flex flex-col sm:flex-row sm:space-x-6">
 					<Image
-						src={`/images/rooms/${room.image}`}
+						src={imageSrc}
 						width={400}
 						height={100}
 						alt={room.name}

@@ -58,7 +58,7 @@ const AddRoomPage = () => {
 							id="description"
 							name="description"
 							className="border rounded w-full h-24 py-2 px-3"
-							placeholder="Enter a description htmlFor the room"
+							placeholder="Enter a description for the room"
 							required
 						></textarea>
 					</div>

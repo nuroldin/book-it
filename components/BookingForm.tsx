@@ -1,10 +1,48 @@
-const BookingForm = () => {
+"use client";
+
+import RoomCard from "./RoomCard";
+import { FC, useEffect } from "react";
+import { bookRoom } from "@/app/actions/bookRoom";
+import { useActionState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+
+export type Room = {
+	$id: string;
+	name: string;
+	address: string;
+	availability: string;
+	price_per_hour: number;
+};
+
+type BookingFormProps = {
+	room: Room;
+};
+
+type BookingFormState = {
+	error?: string;
+	success?: string;
+};
+
+const BookingForm: FC<BookingFormProps> = ({ room }) => {
+	const [state, formAction] = useActionState(bookRoom, {});
+	const router = useRouter();
+
+	useEffect(() => {
+		if (state.error) toast.error(state.error);
+		if (state.success) {
+			toast.success(state.success);
+			router.push("/bookings");
+		}
+	}, [state, router]);
+
 	return (
 		<div className="mt-6">
 			<h2 className="text-xl font-bold">Book this Room</h2>
-			<form className="mt-4">
+			<form className="mt-4" action={formAction}>
+				<input type="hidden" name="room_id" value={room.$id} />
 				<div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-					{["Check-In", "Check-Out"].map((label) => (
+					{["Check_in", "Check_out"].map((label) => (
 						<div key={label}>
 							<label
 								htmlFor={`${label.toLowerCase()}_date`}
@@ -21,7 +59,7 @@ const BookingForm = () => {
 							/>
 						</div>
 					))}
-					{["Check-In", "Check-Out"].map((label) => (
+					{["Check_in", "Check_out"].map((label) => (
 						<div key={label}>
 							<label
 								htmlFor={`${label.toLowerCase()}_time`}

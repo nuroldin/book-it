@@ -6,6 +6,7 @@ import { cookies } from "next/headers";
 import { ID, Models } from "node-appwrite";
 import checkAuth from "./checkAuth";
 import { revalidatePath } from "next/cache";
+import { checkRoomAvailability } from "./checkRoomAvailability";
 
 type BookingFormState = {
 	success?: string;
@@ -53,8 +54,22 @@ export async function bookRoom(
 			return { error: "All fields are required." };
 		}
 
+		// Combine date and time to ISO 8601 format
 		const checkInDateTime = new Date(`${checkInDate}T${checkInTime}`);
 		const checkOutDateTime = new Date(`${checkOutDate}T${checkOutTime}`);
+
+		// Check if room is available
+		const isAvailable = await checkRoomAvailability(
+			roomId,
+			checkInDateTime,
+			checkOutDateTime
+		);
+
+		if (!isAvailable) {
+			return {
+				error: "This room is already booked for the selected time",
+			};
+		}
 
 		if (isNaN(checkInDateTime.getTime()) || isNaN(checkOutDateTime.getTime())) {
 			return { error: "Invalid date/time format." };

@@ -27,7 +27,7 @@ function dateRangesOverlap(
 	checkInB: DateTime,
 	checkOutB: DateTime
 ) {
-	return checkInA < checkOutB && checkOutA > checkInB;
+	return checkInA <= checkOutB && checkOutA >= checkInB;
 }
 
 export async function checkRoomAvailability(
